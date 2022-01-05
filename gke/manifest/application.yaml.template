@@ -1,0 +1,23 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "$name"
+  namespace: "$namespace"
+  annotations:
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "minio-io", "product_id": "minio", "partner_name": "MinIO"}'
+  labels:
+    app.kubernetes.io/name: "$name"
+spec:
+  descriptor:
+    type: minio
+    version: '4.3.7'
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$name"
+  componentKinds:
+  - group: apps
+    kind: Deployment
+  - group: ''
+    kind: Service
+  - group: core
+    kind: ServiceAccount

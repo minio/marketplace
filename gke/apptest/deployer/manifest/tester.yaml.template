@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "${name}-tester"
+  labels:
+    app.kubernetes.io/name: "${name}"
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  containers:
+  - name: tester
+    image: "${imageTester}"
+    command: ["bash"]
+    args: ["/test.sh"]
+  restartPolicy: Never

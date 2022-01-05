@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    operator.min.io/authors: MinIO, Inc.
+    operator.min.io/license: AGPLv3
+    operator.min.io/support: https://subnet.min.io
+  name: minio-operator-biiling-sa
+  namespace: "$namespace"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: minio-operator-biiling-sa-role
+rules:
+  - apiGroups:
+      - minio.min.io
+    resources:
+      - "*"
+    verbs:
+      - "*"
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name:  minio-operator-biiling-sa-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name:  minio-operator-biiling-sa-role
+subjects:
+  - kind: ServiceAccount
+    name:  minio-operator-biiling-sa
+    namespace: "$namespace"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-operator-billing
+  namespace: "$namespace"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio-operator-billing
+  template:
+    metadata:
+      labels:
+        app: minio-operator-billing
+    spec:
+      serviceAccountName:  minio-operator-biiling-sa
+      containers:
+      - env:
+        - name: CLOUD_TYPE
+          value: "google"
+        - name: PROJECT_ID
+          value: "peak-essence-171622"
+        - name: ZONE
+          value: "us-central1-c"
+        - name: CLUSTER_NAME
+          value: "minio-cluster"
+        name: minio-operator-billing
+        image: "$imageBillingFull"
+        command: []
+      restartPolicy: Always
+

@@ -1,0 +1,263 @@
+---
+# Source: provisioner/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: local-static-provisioner
+  namespace: "$namespace"
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+---
+# Source: provisioner/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-static-provisioner-config
+  namespace: "$namespace"
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+data:
+  useNodeNameOnly: "true"
+  storageClassMap: |
+    local-ssd:
+      hostDir: /mnt/disks
+      mountDir: /mnt/disks
+---
+# Source: provisioner/templates/storageclass.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-ssd
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+---
+# Source: provisioner/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: local-static-provisioner-node-clusterrole
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get"]
+---
+# Source: provisioner/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: local-static-provisioner-pv-binding
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+subjects:
+- kind: ServiceAccount
+  name: local-static-provisioner
+  namespace: "$namespace"
+roleRef:
+  kind: ClusterRole
+  name: system:persistent-volume-provisioner
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: provisioner/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: local-static-provisioner-node-binding
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+subjects:
+- kind: ServiceAccount
+  name: local-static-provisioner
+  namespace: "$namespace"
+roleRef:
+  kind: ClusterRole
+  name: local-static-provisioner-node-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: provisioner/templates/daemonset_linux.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: local-static-provisioner
+  namespace: "$namespace"
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: provisioner
+      app.kubernetes.io/instance: local-static-provisioner
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: provisioner
+        app.kubernetes.io/instance: local-static-provisioner
+      annotations:
+        checksum/config: 86868629e0a81dad4847587c849b4ae1ceb368a74eb53def61158f3496a47a27
+    spec:
+      serviceAccountName: local-static-provisioner
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: provisioner
+          image: "$imageProvisionerFull"
+          securityContext:
+            privileged: true
+          env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: JOB_CONTAINER_IMAGE
+            value: "$imageProvisionerFull"
+          ports:
+          - name: metrics
+            containerPort: 8080
+          volumeMounts:
+            - name: provisioner-config
+              mountPath: /etc/provisioner/config
+              readOnly: true
+            - name: provisioner-dev
+              mountPath: /dev
+            - name: local-scsi
+              mountPath: /mnt/disks
+              mountPropagation: HostToContainer
+      volumes:
+        - name: provisioner-config
+          configMap:
+            name: local-static-provisioner-config
+        - name: provisioner-dev
+          hostPath:
+            path: /dev
+        - name: local-scsi
+          hostPath:
+            path: /mnt/disks
+---
+# Source: provisioner/templates/daemonset_windows.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: local-static-provisioner-win
+  namespace: "$namespace"
+  labels:
+    helm.sh/chart: provisioner-2.6.0-alpha.0
+    app.kubernetes.io/name: provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: provisioner
+      app.kubernetes.io/instance: local-static-provisioner
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: provisioner
+        app.kubernetes.io/instance: local-static-provisioner
+      annotations:
+        checksum/config: 86868629e0a81dad4847587c849b4ae1ceb368a74eb53def61158f3496a47a27
+    spec:
+      serviceAccountName: local-static-provisioner
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+        # an empty key operator Exists matches all keys, values and effects
+        # which meants that this will tolerate everything
+        - operator: "Exists"
+      containers:
+        - name: provisioner
+          image: "$imageProvisionerFull"
+          env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: JOB_CONTAINER_IMAGE
+            value: "$imageProvisionerFull"
+          ports:
+          - name: metrics
+            containerPort: 8080
+          volumeMounts:
+            - name: provisioner-config
+              mountPath: /etc/provisioner/config
+              readOnly: true
+            - name: provisioner-dev
+              mountPath: /dev
+            - name: local-scsi
+              mountPath: /mnt/disks
+              mountPropagation: HostToContainer
+            - name: csi-proxy-volume-v1
+              mountPath: \\.\pipe\csi-proxy-volume-v1
+            - name: csi-proxy-filesystem-v1
+              mountPath: \\.\pipe\csi-proxy-filesystem-v1
+            # these csi-proxy paths are still included for compatibility, they're used
+            # only if the node has still the beta version of the CSI proxy
+            - name: csi-proxy-volume-v1beta2
+              mountPath: \\.\pipe\csi-proxy-volume-v1beta2
+            - name: csi-proxy-filesystem-v1beta2
+              mountPath: \\.\pipe\csi-proxy-filesystem-v1beta2
+      volumes:
+        - name: csi-proxy-volume-v1
+          hostPath:
+            path: \\.\pipe\csi-proxy-volume-v1
+            type: ""
+        - name: csi-proxy-filesystem-v1
+          hostPath:
+            path: \\.\pipe\csi-proxy-filesystem-v1
+            type: ""
+        # these csi-proxy paths are still included for compatibility, they're used
+        # only if the node has still the beta version of the CSI proxy
+        - name: csi-proxy-volume-v1beta2
+          hostPath:
+            path: \\.\pipe\csi-proxy-volume-v1beta2
+            type: ""
+        - name: csi-proxy-filesystem-v1beta2
+          hostPath:
+            path: \\.\pipe\csi-proxy-filesystem-v1beta2
+            type: ""
+        - name: provisioner-config
+          configMap:
+            name: local-static-provisioner-config
+        - name: provisioner-dev
+          hostPath:
+            path: "C:\\dev"
+            # If nothing exists at the given path, an empty directory will be
+            # created there as needed with permission set to 0755,
+            # having the same group and ownership with Kubelet.
+            type: DirectoryOrCreate
+        - name: local-scsi
+          hostPath:
+            path: /mnt/disks
