@@ -1,23 +1,27 @@
-## 0.- Decide on Configuration
+# Setting up MinIO on AWS EKS
+
+The following steps will guide you through setting up MinIO on AWS EKS
+
+## Pre-requisites
+
+* [awscli](https://aws.amazon.com/cli/)
+* [kubectl](https://kubernetes.io/docs/tasks/tools/)
+* [eksctl](https://eksctl.io/introduction/#installation)
+
+## 0.- Before you start
 
 You are going to need three basic configuration parameters for your cluster
 
-### 0.1.- Account Number
-
-Your account number can be obtained from the AWS Console or by running the following command
+`Account Number` can be obtained from the AWS Console or by running the following command
 
 ```shell
 export AWS_ACCOUNT_NUMBER=`aws sts get-caller-identity --query "Account" --output text` 
 echo $AWS_ACCOUNT_NUMBER
 ```
 
-### 0.2.- Region
+Decide a `region` for example `us-west-2`
 
-Decide a region for example `us-west-2` (dropdown)
-
-### 0.3.- Name the cluster
-
-Pick a name for the cluster, for example `minio-cluster`
+Pick a `Cluster Name`, for example `minio-cluster`
 
 ## 1.- Setup cluster
 
@@ -28,10 +32,8 @@ eksctl create cluster --config-file minio-cluster.yaml
 ## 2.- Install Operator (with integration)
 
 ```shell
-kubectl apply -k github.com/minio/operator/resources/\?ref\=v4.3.7 
+kubectl apply -k github.com/miniohq/marketplace/eks/resources 
 ```
-
-> ⚠️ Note:️ The install link for the integration will be different
 
 ### 2.1 Create IAM Policy
 
@@ -59,7 +61,13 @@ eksctl create iamserviceaccount \
     --override-existing-serviceaccounts
 ```
 
-## 3.- Get the JWT to login to Operator UI
+## 3.- Install Operator (with integration)
+
+```shell
+kubectl apply -k github.com/miniohq/marketplace/eks/resources 
+```
+
+### 3.1- Get the JWT to login to Operator UI
 
 ```shell
 kubectl -n minio-operator  get secret $(kubectl -n minio-operator get serviceaccount console-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode 
