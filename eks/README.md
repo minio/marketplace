@@ -29,11 +29,10 @@ Pick a `Cluster Name`, for example `minio-cluster`
 eksctl create cluster --config-file minio-cluster.yaml
 ```
 
-## 2.- Install Operator (with integration)
+## 2.- Setup required Roles, Policies and Connectors
 
-```shell
-kubectl apply -k github.com/miniohq/marketplace/eks/resources 
-```
+All of these are scoped to the specific cluster called `Cluster Name` on `region` on the given `account number`, so make
+sure to update those values
 
 ### 2.1 Create IAM Policy
 
@@ -56,7 +55,7 @@ eksctl create iamserviceaccount \
     --name minio-operator \
     --namespace minio-operator \
     --cluster minio-cluster \
-    --attach-policy-arn arn:aws:iam::804065449417:policy/minio-eks-minio-cluster-group-scaling \
+    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-minio-cluster-group-scaling \
     --approve \
     --override-existing-serviceaccounts
 ```
