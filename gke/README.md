@@ -1,12 +1,12 @@
 # Deploy MinIO through Google Cloud Marketplace
 
-### Prerequisites
+## Prerequisites
 
 - Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstarts)
 - Login to GCP with gcloud `gcloud auth login` 
 - Set the default project `gcloud config set project [YOUR-PROJECT-NAME]`
 
-### 1. Create a GKE cluster
+## 1. Create a GKE cluster
 Update the REGION and run the following command. For example `us-central1`
 ```
 gcloud container clusters create minio-cluster \
@@ -21,14 +21,14 @@ Configure kubectl
 gcloud container clusters get-credentials minio-cluster --region=REGION
 ```
 
-### 2. Install MinIO from Google Cloud Marketplace
+## 2. Install MinIO from Google Cloud Marketplace
 
 - Goto https://console.cloud.google.com/marketplace/product/minio-inc-public/minio-enterpise
 - Click `Purchase`
 - Select the Cluster created above
 - Click `Deploy`
 
-### 3. Access MinIO Operator
+## 3. Access MinIO Operator
 
 Run the following command and copy the token
 ```
@@ -39,13 +39,7 @@ kubectl port-forward svc/console 9090 -n minio-operator
 ```
 Open http://localhost:9090 and use the token
 
-### 4. Create MinIO tenant
-
-Install local volume provisioner
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/sig-storage-local-static-provisioner/master/helm/generated_examples/gke.yaml
-```
+## 4. Create MinIO tenant
 
 Create a new tenant from Operator (http://localhost:9090)
 
@@ -54,3 +48,7 @@ Create a new tenant from Operator (http://localhost:9090)
 Download the credentials
 
 ![image](https://user-images.githubusercontent.com/42696688/146743430-c075f272-8a49-46c3-96fa-f32d18af70f1.png)
+
+## 5. Sign Up for MinIO Subscription Network
+
+To receive support send us an email to subnet@min.io to get started and receive 24/7 support
