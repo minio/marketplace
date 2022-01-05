@@ -4,7 +4,6 @@ The following steps will guide you through setting up MinIO on AWS EKS
 
 ## Pre-requisites
 
-
 > ⚠️ **You must create a subcription in the AWS Marketplace for MinIO else the automation from this setup won't work due to a missing entitlement.**
 
 
@@ -87,7 +86,6 @@ kubectl -n minio-operator port-forward svc/console 9090
 ### 4.1 - Open the UI and create a Tenant
 
 Go to http://localhost:9090 enter the JWT from the previous step and create a tenant.
-
 
 ## 5.- Sign Up for MinIO Subscription Network
 

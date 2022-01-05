@@ -6,7 +6,7 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/operator
-    newTag: v4.4.0
+    newTag: v4.4.1
   - name: minio/console
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/console
     #    newName: miniodev/console
@@ -17,7 +17,7 @@ images:
     newTag: v4.3.9
 
 resources:
-  - github.com/minio/operator/resources/?ref=v4.4.0
+  - github.com/minio/operator/resources/?ref=v4.4.1
   - nvme-i3en-12xlarge.yaml
   - hdd-d3en-12xlarge.yaml
 
