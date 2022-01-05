@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeNodegroup",
+        "eks:ListNodegroups"
+      ],
+      "Resource": [
+        "arn:aws:eks:*:804065449417:nodegroup/minio-cluster/*/*",
+        "arn:aws:eks:us-west-2:804065449417:cluster/minio-cluster"
+      ]
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": "eks:UpdateNodegroupConfig",
+      "Resource": [
+        "arn:aws:eks:*:804065449417:nodegroup/minio-cluster/*/*",
+        "arn:aws:eks:us-west-2:804065449417:cluster/minio-cluster"
+      ]
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "eks:CreateNodegroup",
+        "eks:TagResource"
+      ],
+      "Resource": "arn:aws:eks:us-west-2:804065449417:cluster/minio-cluster"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": "arn:aws:iam::804065449417:role/eksctl-minio-cluster*"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:DescribeSubnets",
+        "autoscaling:Describe*",
+        "ec2:DescribeLaunchTemplateVersions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: console
+spec:
+  template:
+    spec:
+      containers:
+        - name: console
+          env:
+            - name: CONSOLE_OPERATOR_MP_MODE
+              value: aws

@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-operator
+  namespace: minio-operator
+spec:
+  template:
+    spec:
+      containers:
+        - name: integration
+          image: 804065449417.dkr.ecr.us-west-2.amazonaws.com/aws-integration:v4.3.9
+          #          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
+          args:
+            - server

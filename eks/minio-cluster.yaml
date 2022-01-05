@@ -1,0 +1,74 @@
+apiVersion: eksctl.io/v1alpha5
+availabilityZones:
+  - us-west-2c
+  - us-west-2d
+  - us-west-2b
+cloudWatch:
+  clusterLogging: { }
+iam:
+  vpcResourceControllerPolicy: true
+  withOIDC: false
+kind: ClusterConfig
+managedNodeGroups:
+  - amiFamily: AmazonLinux2
+    desiredCapacity: 2
+    maxSize: 2
+    minSize: 2
+    disableIMDSv1: false
+    disablePodIMDS: false
+    iam:
+      withAddonPolicies:
+        albIngress: false
+        appMesh: false
+        appMeshPreview: false
+        autoScaler: false
+        certManager: false
+        cloudWatch: false
+        ebs: false
+        efs: false
+        externalDNS: false
+        fsx: false
+        imageBuilder: false
+        xRay: false
+    instanceSelector: { }
+    instanceType: m5.xlarge
+    labels:
+      alpha.eksctl.io/cluster-name: minio-cluster
+      alpha.eksctl.io/nodegroup-name: ng-minio-mngt
+      alpha.min.io/nodegroup-template: template
+    name: ng-minio-mngt
+    privateNetworking: false
+    releaseVersion: ""
+    securityGroups:
+      withLocal: null
+      withShared: null
+    ssh:
+      allow: false
+      publicKeyPath: ""
+    tags:
+      alpha.eksctl.io/nodegroup-name: ng-minio-mngt
+      alpha.eksctl.io/nodegroup-type: managed
+    volumeIOPS: 3000
+    volumeSize: 80
+    volumeThroughput: 125
+    volumeType: gp3
+    preBootstrapCommands:
+      - echo IyEvYmluL2Jhc2gKI3NldCAteAoKbW91bnRfZGV2aWNlKCl7CkRFVklDRT0iL2Rldi8kMSIKVk9MVU1FX05BTUU9JDIKTU9VTlRfUE9JTlQ9JDMKCmZvcm1hdF9kZXZpY2UoKSB7CiAgZWNobyAiRm9ybWF0dGluZyAkREVWSUNFIgogIG1rZnMueGZzIC1pbWF4cGN0PTI1IC1mIC1MICRNT1VOVF9QT0lOVCAkREVWSUNFCn0KY2hlY2tfZGV2aWNlKCkgewogIGlmIFsgLWYgIi9ldGMvc3lzdGVtZC9zeXN0ZW0vJE1PVU5UX1BPSU5ULm1vdW50IiBdOyB0aGVuCiAgICBlY2hvICJEZXZpY2UgJE1PVU5UX1BPSU5UICgkREVWSUNFKSBleGlzdHMiCiAgICBlY2hvICJObyBhY3Rpb25zIHJlcXVpcmVkLi4uIgogIGVsc2UKICAgIGVjaG8gIiRNT1VOVF9QT0lOVC5tb3VudCB3YXMgbm90IGZvdW5kLCBjcmVhdGluZyB2b2x1bWUiCiAgICBmb3JtYXRfZGV2aWNlCiAgZmkKfQpjaGVja19tb3VudCgpIHsKICBpZiBbIC1mICIvZXRjL3N5c3RlbWQvc3lzdGVtLyRNT1VOVF9QT0lOVC5tb3VudCIgXTsgdGhlbgogICAgZWNobyAiRm91bmQgJE1PVU5UX1BPSU5ULm1vdW50IGluIC9ldGMvc3lzdGVtZC9zeXN0ZW0vIgogICAgZWNobyAiTm8gYWN0aW9ucyByZXF1aXJlZC4uLiIKICBlbHNlCiAgICBlY2hvICIkTU9VTlRfUE9JTlQubW91bnQgd2FzIG5vdCBmb3VuZCBpbiAvZXRjL3N5c3RlbWQvc3lzdGVtLyBhZGRpbmcgaXQiCiAgICBta2RpciAtcCAvJE1PVU5UX1BPSU5UCiAgICAKICAgIGVjaG8gIltVbml0XSIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIkRlc2NyaXB0aW9uPU1vdW50IFN5c3RlbSBCYWNrdXBzIERpcmVjdG9yeSIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIiIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIltNb3VudF0iID4+IC9ldGMvc3lzdGVtZC9zeXN0ZW0vJE1PVU5UX1BPSU5ULm1vdW50CiAgICBlY2hvICJXaGF0PUxBQkVMPSRNT1VOVF9QT0lOVCIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIldoZXJlPS8kTU9VTlRfUE9JTlQiID4+IC9ldGMvc3lzdGVtZC9zeXN0ZW0vJE1PVU5UX1BPSU5ULm1vdW50CiAgICBlY2hvICJUeXBlPXhmcyIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIk9wdGlvbnM9bm9hdGltZSIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIiIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIltJbnN0YWxsXSIgPj4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS8kTU9VTlRfUE9JTlQubW91bnQKICAgIGVjaG8gIldhbnRlZEJ5PW11bHRpLXVzZXIudGFyZ2V0IiA+PiAvZXRjL3N5c3RlbWQvc3lzdGVtLyRNT1VOVF9QT0lOVC5tb3VudAoKICAgIHN5c3RlbWN0bCBlbmFibGUgJE1PVU5UX1BPSU5ULm1vdW50CiAgICBzeXN0ZW1jdGwgc3RhcnQgJE1PVU5UX1BPSU5ULm1vdW50CiAgZmkKfQpMQUJFTD0kKGJsa2lkIC1MICRWT0xVTUVfTkFNRSkKY2hlY2tfZGV2aWNlCmNoZWNrX21vdW50CnN5c3RlbWN0bCBkYWVtb24tcmVsb2FkCn0KCmZvciBpIGluIGBsc2JsayAtZCB8IGdyZXAgLXYgTkFNRSB8IGdyZXAgLXYgbnZtZTAgfCBhd2sgJ3twcmludCAkMX0nYDsgZG8KICBtbnRfcG9pbnQ9YGVjaG8gJGkgfCBzZWQgLWUgJ3MvbnZtZS9kaXNrL2cnIC1lICdzL24xLy9nJ2AKICBtb3VudF9kZXZpY2UgJGkgJGkgJG1udF9wb2ludDsKZG9uZQo= | base64 --decode > mount_drives.sh
+      - chmod +x mount_drives.sh
+      - ./mount_drives.sh
+metadata:
+  name: minio-cluster
+  region: us-west-2
+  version: "1.21"
+privateCluster:
+  enabled: false
+  skipEndpointCreation: false
+vpc:
+  autoAllocateIPv6: false
+  cidr: 192.168.0.0/16
+  clusterEndpoints:
+    privateAccess: false
+    publicAccess: true
+  manageSharedNodeSecurityGroupRules: true
+  nat:
+    gateway: Single

@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: minio-operator
+
+
+#images:
+#  - name: minio/operator
+#    newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/operator
+#    newTag: v4.4.0
+#  - name: minio/console
+#    newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/console
+#    #    newName: miniodev/console
+#    newTag: v0.13.2
+#  - name: 804065449417.dkr.ecr.us-west-2.amazonaws.com/aws-integration
+#    newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/integration
+#    #    newName: 804065449417.dkr.ecr.us-west-2.amazonaws.com/aws-integration
+#    newTag: v4.3.9
+
+resources:
+  - github.com/minio/operator/resources/?ref=v4.4.0
+  - nvme-i3en-12xlarge.yaml
+  - hdd-d3en-12xlarge.yaml
+
+patchesStrategicMerge:
+  - overlays/console-deployment.yaml
+  - overlays/operator-deployment.yaml
+
+
+patchesJson6902:
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRole
+      name: minio-operator-role
+    path: overlays/patch-minio-operator-sa.yaml
