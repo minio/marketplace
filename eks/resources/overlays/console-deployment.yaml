@@ -8,5 +8,5 @@ spec:
       containers:
         - name: console
           env:
-            - name: CONSOLE_OPERATOR_MP_MODE
+            - name: CONSOLE_OPERATOR_MARKETPLACE
               value: aws

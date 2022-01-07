@@ -77,11 +77,15 @@ kubectl apply -k github.com/miniohq/marketplace/eks/resources
 kubectl -n minio-operator  get secret $(kubectl -n minio-operator get serviceaccount console-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode 
 ```
 
+![JWT Token](jwt.png)
+
 ## 4.- Port Forward into Operator UI
 
 ```shell
 kubectl -n minio-operator port-forward svc/console 9090
 ```
+
+![Port Forwarding](port-forward.png)
 
 ### 4.1 - Open the UI and create a Tenant
 
