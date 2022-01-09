@@ -95,6 +95,17 @@ kubectl -n minio-operator port-forward svc/console 9090
 
 Go to http://localhost:9090 enter the JWT from the previous step and create a tenant.
 
+![Login](login.png)
+
+Now click on `Create Tenant`
+
+![List Tenant](tenant-list.png)
+
+Fill in the desired size of the MinIO Tenant and the storage type
+
+![Create Tenant](create-tenant.png)
+
 ## 5.- Sign Up for MinIO Subscription Network
 
-To receive support send us an email to subnet@min.io to get started and receive 24/7 support 
+To receive support send us an email to subnet@min.io which includes your `AWS Account Number` to get started and receive
+24/7 support.
