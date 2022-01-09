@@ -81,7 +81,7 @@ kubectl apply -k github.com/miniohq/marketplace/eks/resources
 kubectl -n minio-operator  get secret $(kubectl -n minio-operator get serviceaccount console-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode 
 ```
 
-![JWT Token](jwt.png)
+![JWT Token](images/jwt.png)
 
 ## 4.- Port Forward into Operator UI
 
@@ -89,21 +89,21 @@ kubectl -n minio-operator  get secret $(kubectl -n minio-operator get serviceacc
 kubectl -n minio-operator port-forward svc/console 9090
 ```
 
-![Port Forwarding](port-forward.png)
+![Port Forwarding](images/port-forward.png)
 
 ### 4.1 - Open the UI and create a Tenant
 
 Go to http://localhost:9090 enter the JWT from the previous step and create a tenant.
 
-![Login](login.png)
+![Login](images/login.png)
 
 Now click on `Create Tenant`
 
-![List Tenant](tenant-list.png)
+![List Tenant](images/tenant-list.png)
 
 Fill in the desired size of the MinIO Tenant and the storage type
 
-![Create Tenant](create-tenant.png)
+![Create Tenant](images/create-tenant.png)
 
 ## 5.- Sign Up for MinIO Subscription Network
 
