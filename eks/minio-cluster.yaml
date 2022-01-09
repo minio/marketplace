@@ -33,7 +33,7 @@ managedNodeGroups:
     instanceSelector: { }
     instanceType: m5.xlarge
     labels:
-      alpha.eksctl.io/cluster-name: minio-cluster
+      alpha.eksctl.io/cluster-name: <CLUSTER_NAME>
       alpha.eksctl.io/nodegroup-name: ng-minio-mngt
       alpha.min.io/nodegroup-template: template
     name: ng-minio-mngt
@@ -57,7 +57,7 @@ managedNodeGroups:
       - chmod +x mount_drives.sh
       - ./mount_drives.sh
 metadata:
-  name: minio-cluster
+  name: <CLUSTER_NAME>
   region: us-west-2
   version: "1.21"
 privateCluster:

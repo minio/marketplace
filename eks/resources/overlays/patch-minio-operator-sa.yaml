@@ -10,3 +10,15 @@
       - watch
       - list
       - patch
+- op: add
+  path: /rules/0
+  value:
+    apiGroups:
+      - ""
+    resources:
+      - persistentvolumes
+    verbs:
+      - get
+      - list
+      - watch
+      - create

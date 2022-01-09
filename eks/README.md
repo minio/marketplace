@@ -30,6 +30,8 @@ Pick a `Cluster Name`, for example `minio-cluster`
 
 ## 1.- Setup cluster
 
+Replace the `<CLUSTER_NAME>` in the `minio-cluster.yaml` file, then execute:
+
 ```shell
 eksctl create cluster --config-file minio-cluster.yaml
 ```
@@ -41,16 +43,18 @@ sure to update those values
 
 ### 2.1 Create IAM Policy
 
+Replace the `<CLUSTER_NAME>` and `<AWS_ACCOUNT_NUMBER>` in the `iam-policy.json` file
+
 ```shell
 aws iam create-policy \
-  --policy-name minio-eks-minio-cluster-group-scaling \
+  --policy-name minio-eks-<CLUSTER_NAME>-group-scaling \
   --policy-document file://iam-policy.json
 ```
 
 ### 2.3 Create a OIDC Provider
 
 ```shell
-eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=minio-cluster --approve
+eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=<CLUSTER_NAME> --approve
 ```
 
 ### 2.2 Create Trust + Role + Service Account
@@ -59,8 +63,8 @@ eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=minio-clus
 eksctl create iamserviceaccount \
     --name minio-operator \
     --namespace minio-operator \
-    --cluster minio-cluster \
-    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-minio-cluster-group-scaling \
+    --cluster <CLUSTER_NAME> \
+    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-<CLUSTER_NAME>-group-scaling \
     --approve \
     --override-existing-serviceaccounts
 ```
