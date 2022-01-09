@@ -6,13 +6,13 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: v4.4.1-v2
+    newTag: v4.4.2-v1
   - name: minio/console
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-console
-    newTag: v0.13.2-v2
+    newTag: v0.13.2-v1
   - name: 804065449417.dkr.ecr.us-west-2.amazonaws.com/aws-integration
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-integration
-    newTag: v4.3.9-v2
+    newTag: v4.4.2-v1
 
 resources:
   - github.com/minio/operator/resources/?ref=v4.4.1

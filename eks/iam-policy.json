@@ -66,6 +66,18 @@
         "ec2:CreateTags"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "aws-marketplace:MeterUsage",
+        "aws-marketplace:ResolveCustomer",
+        "aws-marketplace:BatchMeterUsage",
+        "aws-marketplace:GetEntitlements",
+        "aws-marketplace:RegisterUsage"
+      ],
+      "Resource": "*"
     }
   ]
 }
