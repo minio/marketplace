@@ -9,8 +9,8 @@
         "eks:ListNodegroups"
       ],
       "Resource": [
-        "arn:aws:eks:*:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
-        "arn:aws:eks:us-west-2:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
+        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
+        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
       ]
     },
     {
@@ -18,8 +18,8 @@
       "Effect": "Allow",
       "Action": "eks:UpdateNodegroupConfig",
       "Resource": [
-        "arn:aws:eks:*:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
-        "arn:aws:eks:us-west-2:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
+        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
+        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
       ]
     },
     {
@@ -29,7 +29,7 @@
         "eks:CreateNodegroup",
         "eks:TagResource"
       ],
-      "Resource": "arn:aws:eks:us-west-2:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
+      "Resource": "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
     },
     {
       "Sid": "",

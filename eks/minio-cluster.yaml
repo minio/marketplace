@@ -36,6 +36,7 @@ managedNodeGroups:
       alpha.eksctl.io/cluster-name: <CLUSTER_NAME>
       alpha.eksctl.io/nodegroup-name: ng-minio-mngt
       alpha.min.io/nodegroup-template: template
+      alpha.min.io/local-storage: ng-minio-mngt
     name: ng-minio-mngt
     privateNetworking: false
     releaseVersion: ""

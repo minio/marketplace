@@ -1,10 +1,11 @@
 # Setting up MinIO on AWS EKS
 
-The following steps will guide you through setting up MinIO on AWS EKS
+The following steps will guide you through setting up a dedicated EKS Cluster for MinIO, if you have an existing EKS
+cluster and would like to manage MinIO via Node Groups [follow these instructions instead](existing-eks-cli-simple.md).
 
 ## Pre-requisites
 
-> ⚠️ **You must create a subcription in the AWS Marketplace for MinIO else the automation from this setup won't work due to a missing entitlement.**
+> ⚠️ **You must create a subcription in the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-smchi7bcs4nn4) for MinIO else the automation from this setup won't work due to a missing entitlement.**
 
 
 Additionally:

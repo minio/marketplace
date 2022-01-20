@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "aws-marketplace:MeterUsage",
+        "aws-marketplace:ResolveCustomer",
+        "aws-marketplace:BatchMeterUsage",
+        "aws-marketplace:GetEntitlements",
+        "aws-marketplace:RegisterUsage"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
