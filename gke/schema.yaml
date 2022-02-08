@@ -4,7 +4,7 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-  publishedVersion: '4.3.7'
+  publishedVersion: '4.4.6'
   publishedVersionMetadata:
     releaseNote: >-
       A first release.
@@ -19,7 +19,6 @@ x-google-marketplace:
             resources: ['customresourcedefinitions', 'clusterroles', 'clusterrolebindings', 'applications', 'storageclasses']
             verbs: ['*']
 
-  # The images property will be filled in during part 2
   images:
     '':
       properties:
@@ -37,13 +36,9 @@ x-google-marketplace:
       properties:
         imageConsoleFull:
           type: FULL
-    billing:
+    ubbagent:
       properties:
-        imageBillingFull:
-          type: FULL
-    local-volume-provisioner:
-      properties:
-        imageProvisionerFull:
+        imageUbbAgentFull:
           type: FULL
 
 properties:
@@ -59,7 +54,7 @@ properties:
     type: string
     x-google-marketplace:
       type: REPORTING_SECRET
-      
+  
 required:
 - name
 - namespace

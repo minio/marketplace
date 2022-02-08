@@ -2041,8 +2041,6 @@ spec:
                 properties:
                   bucketDNS:
                     type: boolean
-                required:
-                - bucketDNS
                 type: object
               securityContext:
                 properties:
@@ -3984,6 +3982,8 @@ spec:
                   type: object
                 nullable: true
                 type: array
+              provisionedBuckets:
+                type: boolean
               provisionedUsers:
                 type: boolean
               revision:
@@ -4053,6 +4053,17 @@ spec:
             type: object
           spec:
             properties:
+              buckets:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    objectLock:
+                      type: boolean
+                    region:
+                      type: string
+                  type: object
+                type: array
               certConfig:
                 properties:
                   commonName:
@@ -4173,6 +4184,18 @@ spec:
                     type: string
                 required:
                 - name
+                type: object
+              features:
+                properties:
+                  bucketDNS:
+                    type: boolean
+                  domains:
+                    properties:
+                      minio:
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               image:
                 type: string
@@ -6656,16 +6679,7 @@ spec:
                     type: array
                 type: object
               prometheusOperator:
-                properties:
-                  annotations:
-                    additionalProperties:
-                      type: string
-                    type: object
-                  labels:
-                    additionalProperties:
-                      type: string
-                    type: object
-                type: object
+                type: boolean
               readiness:
                 properties:
                   exec:
@@ -6737,8 +6751,6 @@ spec:
                 properties:
                   bucketDNS:
                     type: boolean
-                required:
-                - bucketDNS
                 type: object
               serviceAccountName:
                 type: string
@@ -8187,6 +8199,8 @@ spec:
                   type: object
                 nullable: true
                 type: array
+              provisionedBuckets:
+                type: boolean
               provisionedUsers:
                 type: boolean
               revision:
@@ -8619,7 +8633,7 @@ rules:
 - apiGroups:
   - monitoring.coreos.com
   resources:
-  - servicemonitors
+  - prometheuses
   verbs:
   - '*'
 - apiGroups:
@@ -8748,7 +8762,6 @@ spec:
         - name: CONSOLE_OPERATOR_MODE
           value: "on"
         image: "$imageConsoleFull"
-        # image: minio/console:v0.12.6
         imagePullPolicy: IfNotPresent
         name: console
         ports:
@@ -8795,9 +8808,12 @@ spec:
                 values:
                 - minio-operator
             topologyKey: kubernetes.io/hostname
+      volumes:
+        - name: ubbagent-config
+          configMap:
+            name: ubbagent-config
       containers:
       - image: "$imageOperatorlFull"
-      # - image: minio/operator:v4.3.7
         imagePullPolicy: IfNotPresent
         name: minio-operator
         resources:
@@ -8809,4 +8825,88 @@ spec:
           runAsGroup: 1000
           runAsNonRoot: true
           runAsUser: 1000
+      - name: ubb-agent
+        image: "$imageUbbAgentFull"
+        env:
+          - name: AGENT_CONFIG_FILE
+            value: "/etc/ubbagent/config.yaml"
+          - name: AGENT_LOCAL_PORT
+            value: "4567"
+          - name: AGENT_ENCODED_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "$reportingSecret"
+                key: reporting-key
+          - name: AGENT_CONSUMER_ID
+            valueFrom:
+              secretKeyRef:
+                name: "$reportingSecret"
+                key: consumer-id
+        volumeMounts:
+          - name: ubbagent-config
+            mountPath: /etc/ubbagent
       serviceAccountName: minio-operator
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "ubbagent-config"
+  namespace: "$namespace"
+data:
+  config.yaml: |
+    # The identity section contains authentication information used
+    # by the agent.
+    identities:
+    - name: gcp
+      gcp:
+        # This parameter accepts a base64-encoded JSON service
+        # account key. The value comes from the reporting secret.
+        encodedServiceAccountKey: $AGENT_ENCODED_KEY
+    # The metrics section defines the metric that will be reported.
+    # Metric names should match verbatim the identifiers created
+    # during pricing setup.
+    metrics:
+    - name: storage
+      type: int
+      endpoints:
+      - name: on_disk
+      - name: servicecontrol
+      # The passthrough marker indicates that no aggregation should
+      # occur for this metric. Reports received are immediately sent
+      # to the reporting endpoint. We use passthrough for the
+      # instance_time metric since reports are generated
+      # automatically by a heartbeat source defined in a later
+      # section.
+      passthrough: {}
+    # The endpoints section defines where metering data is ultimately
+    # sent. Currently supported endpoints include:
+    # * disk - some directory on the local filesystem
+    # * servicecontrol - Google Service Control
+    endpoints:
+    - name: on_disk
+      # The disk endpoint is useful for debugging, but its inclusion
+      # is not necessary in a production deployment.
+      disk:
+        reportDir: /var/lib/ubbagent/reports
+        expireSeconds: 3600
+    - name: servicecontrol
+      servicecontrol:
+        identity: gcp
+        # The service name was sent by email by Google in the file
+        # jetstack-secure-for-cert-manager.yaml. See:
+        # https://github.com/jetstack/platform-board/issues/347
+        serviceName: minio-enterprise.mp-minio-inc-public.appspot.com
+        consumerId: $AGENT_CONSUMER_ID
+    # The sources section lists metric data sources run by the agent
+    # itself. The currently-supported source is 'heartbeat', which
+    # sends a defined value to a metric at a defined interval. In
+    # this example, the heartbeat sends a 1-hour value through the
+    # "instance_time" metric every hour.
+    # sources:
+    # - name: instance_time_heartbeat
+    #   heartbeat:
+    #     metric: time
+    #     intervalSeconds: 3600
+    #     value:
+    #       int64Value: 1
+
