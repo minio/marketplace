@@ -1,5 +1,5 @@
 REGISTRY ?= gcr.io/minio-inc-public
-TAG ?= 4.4.6
+TAG ?= 4.4.7
 RELEASE_TAG ?= 4.4
 MARKETPLACE_TOOLS_TAG ?= 0.10.18
 
@@ -54,7 +54,7 @@ deployer/verify:
 deployer/install:
 	kubectl create namespace minio-operator || echo true
 	mpdev install --deployer="$(DEPLOYER_IMAGE)" \
-	       --parameters='{"name": "operator-deployment", "namespace": "minio-operator" }'
+	       --parameters='{"name": "operator-deployment", "namespace": "minio-operator", "reportingSecret": "minio-enterprise-license" }'
 
 images:
 	docker pull "$(MINIO_IMAGE_SRC)"
