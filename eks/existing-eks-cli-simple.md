@@ -1,6 +1,7 @@
 # Setting up MinIO on AWS EKS
 
-The following steps will guide you through setting up MinIO on AWS EKS
+The following steps will guide you through setting up MinIO on AWS EKS, however this guide assumes you already have
+the `AWS EBS CSI Driver` installed on the EKS cluster as well.
 
 ## Pre-requisites
 

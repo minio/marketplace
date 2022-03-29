@@ -1,0 +1,12 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: performance-optimized
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+parameters:
+  csi.storage.k8s.io/fstype: xfs
+  type: gp3
+  iops: "16000"
+  throughput: "1000"

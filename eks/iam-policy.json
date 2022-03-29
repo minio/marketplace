@@ -2,70 +2,144 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Action": [
-        "eks:DescribeNodegroup",
-        "eks:ListNodegroups"
-      ],
-      "Resource": [
-        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
-        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
-      ]
-    },
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": "eks:UpdateNodegroupConfig",
-      "Resource": [
-        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:nodegroup/<CLUSTER_NAME>/*/*",
-        "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
-      ]
-    },
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "eks:CreateNodegroup",
-        "eks:TagResource"
-      ],
-      "Resource": "arn:aws:eks:<REGION>:<AWS_ACCOUNT_NUMBER>:cluster/<CLUSTER_NAME>"
-    },
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "iam:PassRole",
-        "iam:ListAttachedRolePolicies"
-      ],
-      "Resource": "arn:aws:iam::<AWS_ACCOUNT_NUMBER>:role/eksctl-<CLUSTER_NAME>*"
-    },
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "iam:GetRole"
+        "ec2:CreateSnapshot",
+        "ec2:AttachVolume",
+        "ec2:DetachVolume",
+        "ec2:ModifyVolume",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeInstances",
+        "ec2:DescribeSnapshots",
+        "ec2:DescribeTags",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeVolumesModifications"
       ],
       "Resource": "*"
     },
     {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "ec2:RunInstances",
-        "ec2:DescribeSubnets",
-        "autoscaling:Describe*",
-        "ec2:DescribeLaunchTemplateVersions"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "",
       "Effect": "Allow",
       "Action": [
         "ec2:CreateTags"
       ],
-      "Resource": "*"
+      "Resource": [
+        "arn:aws:ec2:*:*:volume/*",
+        "arn:aws:ec2:*:*:snapshot/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ec2:CreateAction": [
+            "CreateVolume",
+            "CreateSnapshot"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags"
+      ],
+      "Resource": [
+        "arn:aws:ec2:*:*:volume/*",
+        "arn:aws:ec2:*:*:snapshot/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/ebs.csi.aws.com/cluster": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/CSIVolumeName": "*"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/kubernetes.io/cluster/*": "owned"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/CSIVolumeName": "*"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/kubernetes.io/cluster/*": "owned"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteSnapshot"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/CSIVolumeSnapshotName": "*"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteSnapshot"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"
+        }
+      }
     },
     {
       "Sid": "",

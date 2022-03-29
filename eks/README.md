@@ -31,11 +31,29 @@ Pick a `Cluster Name`, for example `minio-cluster`
 
 ## 1.- Setup cluster
 
-Replace the `<CLUSTER_NAME>` in the `minio-cluster.yaml` file, then execute:
+### 1.1.1- New Cluster
+
+Replace the `<CLUSTER_NAME>` in the following command, then execute:
 
 ```shell
-eksctl create cluster --config-file minio-cluster.yaml
+ eksctl create cluster \
+--name <CLUSTER_NAME> \
+--version 1.21 \
+--node-type=c6gn.16xlarge \
+--nodes-min=4 \
+--nodes=4 \
+--nodes-max=4 --zones=us-west-2a,us-west-2b,us-west-2c
 ```
+
+### 1.1.2- Existing cluster
+
+You can use any existing cluster as long as you install
+the [AWS EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
+
+### 1.2 - Install the AWS EBS CSI Driver
+
+The [AWS EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) is needed to use `gp3` and `sc1` type of
+storage inside EKS.
 
 ## 2.- Setup required Roles, Policies and Connectors
 
@@ -48,7 +66,7 @@ Replace the `<CLUSTER_NAME>` and `<AWS_ACCOUNT_NUMBER>` in the `iam-policy.json`
 
 ```shell
 aws iam create-policy \
-  --policy-name minio-eks-<CLUSTER_NAME>-group-scaling \
+  --policy-name minio-eks-<CLUSTER_NAME> \
   --policy-document file://iam-policy.json
 ```
 
@@ -65,9 +83,27 @@ eksctl create iamserviceaccount \
     --name minio-operator \
     --namespace minio-operator \
     --cluster <CLUSTER_NAME> \
-    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-<CLUSTER_NAME>-group-scaling \
+    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-<CLUSTER_NAME> \
     --approve \
     --override-existing-serviceaccounts
+```
+
+Install the Service account for the `AWS EBS CSI Driver`
+
+```shell
+eksctl create iamserviceaccount \
+    --name ebs-csi-controller-sa \
+    --namespace kube-system \
+    --cluster <CLUSTER_NAME> \
+    --attach-policy-arn arn:aws:iam::<AWS_ACCOUNT_NUMBER>:policy/minio-eks-<CLUSTER_NAME> \
+    --approve \
+    --override-existing-serviceaccounts
+```
+
+### 2.3 Install the AWS EBS CSI Driver
+
+```shell
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.5"
 ```
 
 ## 3.- Install Operator

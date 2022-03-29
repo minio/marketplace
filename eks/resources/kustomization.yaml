@@ -6,19 +6,18 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: v4.4.3-v4
+    newTag: v4.4.13
   - name: minio/console
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-console
-    newTag: v0.13.2-v4
+    newTag: v0.15.6
 
 resources:
-  - github.com/minio/operator/resources/?ref=v4.4.3
-  - nvme-i3en-12xlarge.yaml
-  - hdd-d3en-12xlarge.yaml
+  - github.com/minio/operator/resources/?ref=v4.4.13
+  - performance-optimized.yaml
+  - capacity-optimized.yaml
 
 patchesStrategicMerge:
   - overlays/console-deployment.yaml
-
 
 patchesJson6902:
   - target:
