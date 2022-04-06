@@ -39,7 +39,7 @@ Replace the `<CLUSTER_NAME>` in the following command, then execute:
  eksctl create cluster \
 --name <CLUSTER_NAME> \
 --version 1.21 \
---node-type=c6gn.16xlarge \
+--node-type=c6i.24xlarge \
 --nodes-min=4 \
 --nodes=4 \
 --nodes-max=4 --zones=us-west-2a,us-west-2b,us-west-2c
