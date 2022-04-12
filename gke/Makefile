@@ -1,5 +1,5 @@
 REGISTRY ?= gcr.io/minio-inc-public
-TAG ?= 4.4.10
+TAG ?= 4.4.14
 RELEASE_TAG ?= 4.4
 MARKETPLACE_TOOLS_TAG ?= 0.10.18
 
@@ -11,7 +11,7 @@ DEPLOYER_IMAGE_RELEASE ?= $(REGISTRY)/minio/deployer:$(RELEASE_TAG)
 TESTER_IMAGE ?= $(REGISTRY)/minio/tester:$(TAG)
 TESTER_IMAGE_RELEASE ?= $(REGISTRY)/minio/tester:$(RELEASE_TAG)
 
-MINIO_IMAGE_SRC = minio/minio:RELEASE.2022-02-24T22-12-01Z
+MINIO_IMAGE_SRC = minio/minio:RELEASE.2022-04-01T03-41-39Z
 MINIO_IMAGE = $(REGISTRY)/minio:$(TAG)
 MINIO_IMAGE_RELEASE = $(REGISTRY)/minio:$(RELEASE_TAG)
 
@@ -19,7 +19,7 @@ MINIO_IMAGE_RELEASE = $(REGISTRY)/minio:$(RELEASE_TAG)
 # OPERATOR_IMAGE = $(REGISTRY)/minio/operator:$(TAG)
 # OPERATOR_IMAGE_RELEASE = $(REGISTRY)/minio/operator:$(RELEASE_TAG)
 
-CONSOLE_IMAGE_SRC = minio/console:v0.14.8
+CONSOLE_IMAGE_SRC = minio/console:v0.15.8
 CONSOLE_IMAGE = $(REGISTRY)/minio/console:$(TAG)
 CONSOLE_IMAGE_RELEASE = $(REGISTRY)/minio/console:$(RELEASE_TAG)
 
@@ -52,6 +52,7 @@ deployer/verify:
 	mpdev verify --deployer="$(DEPLOYER_IMAGE)"
 
 deployer/install:
+	kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml
 	kubectl create namespace minio-operator || echo true
 	mpdev install --deployer="$(DEPLOYER_IMAGE)" \
 	       --parameters='{"name": "operator-deployment", "namespace": "minio-operator", "reportingSecret": "minio-enterprise-license" }'
