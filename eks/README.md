@@ -70,13 +70,13 @@ aws iam create-policy \
   --policy-document file://iam-policy.json
 ```
 
-### 2.3 Create a OIDC Provider
+### 2.2 Create a OIDC Provider
 
 ```shell
 eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=<CLUSTER_NAME> --approve
 ```
 
-### 2.2 Create Trust + Role + Service Account
+### 2.3 Create Trust + Role + Service Account
 
 ```shell
 eksctl create iamserviceaccount \
@@ -100,7 +100,7 @@ eksctl create iamserviceaccount \
     --override-existing-serviceaccounts
 ```
 
-### 2.3 Install the AWS EBS CSI Driver
+### 2.4 Install the AWS EBS CSI Driver
 
 ```shell
 kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.5"
