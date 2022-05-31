@@ -1,7 +1,7 @@
 # Setting up MinIO on AWS EKS
 
 The following steps will guide you through setting up a dedicated EKS Cluster for MinIO, if you have an existing EKS
-cluster and would like to manage MinIO via Node Groups [follow these instructions instead](existing-eks-cli-simple.md).
+cluster and would like to manage MinIO via Node Groups [follow these instructions instead](https://github.com/minio/marketplace/blob/master/eks/existing-eks-cli-simple.md).
 
 ## Pre-requisites
 
