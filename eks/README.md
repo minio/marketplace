@@ -1,7 +1,7 @@
 # Setting up MinIO on AWS EKS
 
 The following steps will guide you through setting up a dedicated EKS Cluster for MinIO, if you have an existing EKS
-cluster and would like to manage MinIO via Node Groups [follow these instructions instead](https://github.com/minio/marketplace/blob/master/eks/existing-eks-cli-simple.md).
+cluster and would like to manage MinIO via Node Groups [follow these instructions instead](https://github.com/minio/marketplace/blob/master/eks/existing-eks-cli-simple.md). The expected time to complete the deployment is less than fifteen minutes.
 
 ## Pre-requisites
 
@@ -13,6 +13,8 @@ Additionally:
 * [awscli](https://aws.amazon.com/cli/)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/)
 * [eksctl](https://eksctl.io/introduction/#installation)
+
+MinIO does not require the use of root privileges for deployment or operation.
 
 ## 0.- Before you start
 
