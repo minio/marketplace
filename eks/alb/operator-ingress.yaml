@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: operator-ingress
+  namespace: minio-operator
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/tags: example-eks-cluster=alb
+#    alb.ingress.kubernetes.io/certificate-arn: replace with ACM Certificate ARN
+    alb.ingress.kubernetes.io/subnets: subnet-id, subnet-id #Replace with actual subnets
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/success-codes: '200'
+#    alb.ingress.kubernetes.io/ssl-redirect: "443"                             #Uncomment this 2 lines for
+#    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'  #redirection from http to https
+spec:
+  ingressClassName: alb
+  rules:
+    - host: operator.exampledomain.com #Replace with DNS domain for Operator
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: console
+                port:
+                  number: 9090
