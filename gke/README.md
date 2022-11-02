@@ -13,7 +13,6 @@ gcloud container clusters create minio-cluster \
   --region=REGION \
   --num-nodes=4 \
   --machine-type=n2-standard-32 \
-  --local-ssd-count=24
 ```
 
 Configure kubectl

@@ -12,7 +12,7 @@ metadata:
 spec:
   descriptor:
     type: minio
-    version: '4.4.15'
+    version: '4.5.3'
     notes: |-
       # Configure kubectl to use cluster
       ```shell
