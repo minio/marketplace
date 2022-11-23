@@ -10789,6 +10789,8 @@ metadata:
     operator.min.io/license: AGPLv3
     operator.min.io/support: https://subnet.min.io
   labels:
+    app.kubernetes.io/instance: minio-operator
+    app.kubernetes.io/name: operator
     name: console
   name: console
   namespace: "$namespace"
@@ -10810,6 +10812,8 @@ metadata:
     operator.min.io/support: https://subnet.min.io
     service.alpha.openshift.io/serving-cert-secret-name: operator-tls
   labels:
+    app.kubernetes.io/instance: minio-operator
+    app.kubernetes.io/name: operator
     name: minio-operator
   name: operator
   namespace: "$namespace"
@@ -10831,6 +10835,9 @@ metadata:
     operator.min.io/authors: MinIO, Inc.
     operator.min.io/license: AGPLv3
     operator.min.io/support: https://subnet.min.io
+  labels:
+    app.kubernetes.io/instance: minio-operator
+    app.kubernetes.io/name: operator
   name: console
   namespace: "$namespace"
 spec:
@@ -10846,6 +10853,8 @@ spec:
         operator.min.io/support: https://subnet.min.io
       labels:
         app: console
+        app.kubernetes.io/instance: minio-operator-console
+        app.kubernetes.io/name: operator
     spec:
       containers:
       - args:
@@ -10874,6 +10883,9 @@ metadata:
     operator.min.io/authors: MinIO, Inc.
     operator.min.io/license: AGPLv3
     operator.min.io/support: https://subnet.min.io
+  labels:
+    app.kubernetes.io/instance: minio-operator
+    app.kubernetes.io/name: operator
   name: minio-operator
   namespace: "$namespace"
 spec:
@@ -10888,6 +10900,8 @@ spec:
         operator.min.io/license: AGPLv3
         operator.min.io/support: https://subnet.min.io
       labels:
+        app.kubernetes.io/instance: minio-operator
+        app.kubernetes.io/name: operator
         name: minio-operator
     spec:
       affinity:

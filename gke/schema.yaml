@@ -4,7 +4,7 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-  publishedVersion: '4.5.3'
+  publishedVersion: '4.5.4'
   publishedVersionMetadata:
     releaseNote: >-
       A first release.

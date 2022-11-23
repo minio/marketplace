@@ -1,5 +1,5 @@
 REGISTRY ?= gcr.io/minio-inc-public
-TAG ?= 4.5.3
+TAG ?= 4.5.4
 RELEASE_TAG ?= 4.5
 MARKETPLACE_TOOLS_TAG ?= 0.11.5
 
@@ -11,7 +11,7 @@ DEPLOYER_IMAGE_RELEASE ?= $(REGISTRY)/minio/deployer:$(RELEASE_TAG)
 TESTER_IMAGE ?= $(REGISTRY)/minio/tester:$(TAG)
 TESTER_IMAGE_RELEASE ?= $(REGISTRY)/minio/tester:$(RELEASE_TAG)
 
-MINIO_IMAGE_SRC = minio/minio:RELEASE.2022-10-29T06-21-33Z
+MINIO_IMAGE_SRC = minio/minio:RELEASE.2022-11-17T23-20-09Z
 MINIO_IMAGE = $(REGISTRY)/minio:$(TAG)
 MINIO_IMAGE_RELEASE = $(REGISTRY)/minio:$(RELEASE_TAG)
 
@@ -19,11 +19,11 @@ MINIO_IMAGE_RELEASE = $(REGISTRY)/minio:$(RELEASE_TAG)
 # OPERATOR_IMAGE = $(REGISTRY)/minio/operator:$(TAG)
 # OPERATOR_IMAGE_RELEASE = $(REGISTRY)/minio/operator:$(RELEASE_TAG)
 
-CONSOLE_IMAGE_SRC = minio/console:v0.21.0
+CONSOLE_IMAGE_SRC = minio/console:v0.21.1
 CONSOLE_IMAGE = $(REGISTRY)/minio/console:$(TAG)
 CONSOLE_IMAGE_RELEASE = $(REGISTRY)/minio/console:$(RELEASE_TAG)
 
-UBB_AGENT_IMAGE_SRC = gcr.io/cloud-marketplace-tools/metering/ubbagent:0.1.0
+UBB_AGENT_IMAGE_SRC = gcr.io/cloud-marketplace-tools/metering/ubbagent:0.1.1
 UBB_AGENT_IMAGE =  $(REGISTRY)/minio/ubbagent:$(TAG)
 UBB_AGENT_IMAGE_RELEASE =  $(REGISTRY)/minio/ubbagent:$(RELEASE_TAG)
 
