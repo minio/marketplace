@@ -115,7 +115,7 @@ kubectl minio proxy -n minio-operator
 
 ### Expose Operator Console UI with a Load balancer
 
-In [*WIP MinIO on EKS:  Exposing MinIO services using Elastic Load Balancers*](#)  is explained the different options on how to expose the MinIO Services, for simplicity we are going to follow the Application Load Balancer Ingress approach.
+In [Exposing MinIO Services in AWS EKS Using Elastic Load Balancers: Overview](https://blog.min.io/expose-minio-aws-eks-elastic-load-balancers/) is explained the different options on how to expose the MinIO Services, for simplicity we are going to follow the Application Load Balancer Ingress approach.
 
 To expose Operator in a Application Load Balancer and assigna a DNS to it let's create a Ingress resource, in this repo is the [../alb/operator-ingress.yaml](../alb/operator-ingress.yaml) example Ingress Manifest, modify it to have your own settings, like:
 
@@ -182,7 +182,7 @@ helm install minio-tenant-1 --namespace minio-tenant-1 --create-namespace minio-
 
 ### Expose the tenant MinIO API and Console
 
-In [*WIP MinIO on EKS:  Exposing MinIO services using Elastic Load Balancers*](#) is explained the different options on how to expose the MinIO Services, for simplicity we are going to follow the Application Load Balancer Ingress approach.
+In [Exposing MinIO Services in AWS EKS Using Elastic Load Balancers: Overview](https://blog.min.io/expose-minio-aws-eks-elastic-load-balancers/) is explained the different options on how to expose the MinIO Services, for simplicity we are going to follow the Application Load Balancer Ingress approach.
 
 To expose The tenant in a Application Load Balancer and assigna a DNS to it let's create a Ingress resource, in this repo is the [../alb/tenant-ingress.yaml](../alb/tenant-ingress.yaml) example Ingress Manifest, modify it to have your own settings, like:
 
