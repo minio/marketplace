@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tenant-ingress
+  namespace: minio-tenant-1 #replace minio-tenant-1 with the actual namespace of the tenant
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/tags: example-eks-cluster=alb
+    #alb.ingress.kubernetes.io/certificate-arn: Replace with the ACM certificate ARN
+    alb.ingress.kubernetes.io/subnets: subnet-id, subnet-id #Replace with the subnets Id's
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/success-codes: "200,403"
+#    alb.ingress.kubernetes.io/ssl-redirect: "443"                             #Uncomment this 2 lines for
+#    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'  #redirection from http to https
+spec:
+  ingressClassName: alb
+  rules:
+    - host: console.minio-tenant-1.exampledomain.com #Replace with the actual DNS that want to assign to the load balancer for console
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio-tenant-1-console #Replace minio-tenant-1 with the namespace of the tenant
+                port:
+                  number: 9443
+    - host: minio-tenant-1.exampledomain.com #Replace with the actual DNS that want to assign to the load balancer for minio API
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 443
