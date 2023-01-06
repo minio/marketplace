@@ -1,24 +1,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: minio-operator
-
-
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: v4.5.5
+    newTag: 'v4.5.6'
   - name: minio/console
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-console
-    newTag: v0.22.2
-
+    newTag: 'v0.22.3'
 resources:
-  - github.com/minio/operator/resources/?ref=v4.5.5
+  - github.com/minio/operator/resources/?ref=v4.5.6
   - performance-optimized.yaml
   - capacity-optimized.yaml
-
 patchesStrategicMerge:
   - overlays/console-deployment.yaml
-
 patchesJson6902:
   - target:
       group: rbac.authorization.k8s.io
