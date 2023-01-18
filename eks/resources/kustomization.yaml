@@ -4,12 +4,12 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: 'v4.5.7'
+    newTag: 'v4.5.8'
   - name: minio/console
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-console
     newTag: 'v0.22.5'
 resources:
-  - github.com/minio/operator/resources/?ref=v4.5.7
+  - github.com/minio/operator/resources/?ref=v4.5.8
   - performance-optimized.yaml
   - capacity-optimized.yaml
 patchesStrategicMerge:
