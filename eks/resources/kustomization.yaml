@@ -4,17 +4,14 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: 'v4.5.8'
-  - name: minio/console
-    newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-console
-    newTag: 'v0.22.5'
+    newTag: 'v5.0.9-1'
 resources:
-  - github.com/minio/operator/resources/?ref=v4.5.8
+  - github.com/minio/operator/resources/?ref=v5.0.9
   - performance-optimized.yaml
   - capacity-optimized.yaml
 patchesStrategicMerge:
-  - overlays/console-deployment.yaml
-patchesJson6902:
+  - overlays/deployment.yaml
+patches:
   - target:
       group: rbac.authorization.k8s.io
       version: v1
