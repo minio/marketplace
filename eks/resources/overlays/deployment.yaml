@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-operator
+  namespace: minio-operator
+spec:
+  template:
+    spec:
+      containers:
+        - name: minio-operator
+          env:
+            - name: MINIO_OPERATOR_RUNTIME
+              value: EKS
