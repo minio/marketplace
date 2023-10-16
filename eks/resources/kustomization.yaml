@@ -4,9 +4,9 @@ namespace: minio-operator
 images:
   - name: minio/operator
     newName: 709825985650.dkr.ecr.us-east-1.amazonaws.com/minio/enterprise-operator
-    newTag: 'v5.0.9-1'
+    newTag: '5.0.10'
 resources:
-  - github.com/minio/operator/resources/?ref=v5.0.9
+  - github.com/minio/operator/resources/?ref=v5.0.10
   - performance-optimized.yaml
   - capacity-optimized.yaml
 patchesStrategicMerge:
